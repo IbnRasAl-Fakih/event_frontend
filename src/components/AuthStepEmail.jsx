@@ -6,7 +6,7 @@ import PrimaryButton from "./PrimaryButton";
 import Divider from "./Divider";
 import GoogleButton from "./GoogleButton";
 
-export default function AuthStepEmail({ steps, activeIndex = 0, onNext }) {
+export default function AuthStepEmail({ steps, activeIndex = 0, onNext, onLogIn }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
@@ -21,7 +21,7 @@ export default function AuthStepEmail({ steps, activeIndex = 0, onNext }) {
     // setError("");
 
     // в конце убрать комменты чтобы была валидация почты
-    
+
     if (onNext) onNext(email.trim());
   };
 
@@ -32,7 +32,7 @@ export default function AuthStepEmail({ steps, activeIndex = 0, onNext }) {
         subtitle={
           <>
             Already have an account?{" "}
-            <button className="text-[var(--color-primary)] underline underline-offset-2 hover:opacity-80">
+            <button onClick={onLogIn} className="text-[var(--color-primary)] underline underline-offset-2 hover:opacity-80">
               Log in
             </button>
           </>

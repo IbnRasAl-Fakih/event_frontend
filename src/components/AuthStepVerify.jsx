@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import AuthHeader from "./AuthHeader";
 import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 import securityIcon from "../images/security_icon.png";
 
 export default function AuthStepVerify({ onBack, onNext }) {
@@ -116,13 +117,7 @@ export default function AuthStepVerify({ onBack, onNext }) {
       </button>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <button
-          className="mt-4 w-full rounded-full border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400"
-          type="button"
-          onClick={onBack}
-        >
-          Back
-        </button>
+        <SecondaryButton onClick={onBack}>Back</SecondaryButton>
         <PrimaryButton onClick={onNext}>Next</PrimaryButton>
       </div>
     </>

@@ -150,7 +150,7 @@ export default function AuthStepBasicInfo({ steps, activeIndex = 1, onNext }) {
               <button
                 ref={sexButtonRef}
                 type="button"
-                className={`flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] ${
+                className={`flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] ${
                   sex === "Other" ? "pointer-events-none opacity-0" : ""
                 }`}
                 onClick={() => setSexOpen((prev) => !prev)}
