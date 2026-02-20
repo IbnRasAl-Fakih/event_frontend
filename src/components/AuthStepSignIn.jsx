@@ -23,6 +23,7 @@ export default function AuthStepSignIn({ onCreateAccount, onForgotPassword }) {
           <input
             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
             type="text"
+            placeholder="Enter your email"
           />
         </label>
 
@@ -46,6 +47,7 @@ export default function AuthStepSignIn({ onCreateAccount, onForgotPassword }) {
           <input
             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
             type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
           />
         </label>
 
