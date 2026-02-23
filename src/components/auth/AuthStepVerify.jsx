@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useState } from "react";
 import AuthHeader from "./AuthHeader";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
-import securityIcon from "../images/security_icon.png";
+import PrimaryButton from "../PrimaryButton";
+import SecondaryButton from "../SecondaryButton";
+import securityIcon from "../../images/security_icon.png";
 
 export default function AuthStepVerify({ onBack, onNext }) {
   const [codes, setCodes] = useState(() => Array(6).fill(""));

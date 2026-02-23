@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AuthHeader from "./AuthHeader";
 import Stepper from "./Stepper";
 import TextField from "./TextField";
-import PrimaryButton from "./PrimaryButton";
-import Divider from "./Divider";
+import PrimaryButton from "../PrimaryButton";
+import Divider from "../Divider";
 import GoogleButton from "./GoogleButton";
 
 export default function AuthStepEmail({ steps, activeIndex = 0, onNext, onLogIn }) {

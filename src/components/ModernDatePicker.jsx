@@ -1,4 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import CalendarIcon from "./svg_icons/CalendarIcon";
+import ChevronLeftIcon from "./svg_icons/ChevronLeftIcon";
+import ChevronRightIcon from "./svg_icons/ChevronRightIcon";
 import {
   Button,
   Calendar,
@@ -17,6 +21,10 @@ import {
   Popover,
 } from "react-aria-components";
 import { useLocale } from "react-aria";
+
+function joinClasses(...parts) {
+  return parts.filter(Boolean).join(" ");
+}
 
 function useOutsideClose(ref, isOpen, onClose) {
   useEffect(() => {
@@ -139,28 +147,65 @@ export default function ModernDatePicker({
   label,
   value,
   onChange,
-  placeholderValue,
+  className,
+  hideLabel = false,
+  groupClassName,
+  dateInputClassName,
+  buttonClassName,
+  iconClassName,
+  valueSegmentClassName,
 }) {
+  const triggerRef = useRef(null);
+
+  useEffect(() => {
+    if (value || typeof onChange !== "function") return;
+    onChange(today(getLocalTimeZone()));
+  }, [onChange, value]);
+
   return (
     <DatePicker
-      className="flex flex-col gap-2"
+      className={joinClasses("flex flex-col", hideLabel ? "gap-0" : "gap-2", className)}
       value={value}
       onChange={onChange}
-      placeholderValue={placeholderValue}
       granularity="day"
     >
-      <Label className="text-sm text-slate-600">{label}</Label>
-      <Group className="flex w-full items-center rounded-xl border border-slate-200 bg-white text-sm text-slate-700 outline-none transition focus-within:border-[var(--color-primary)] focus-within:ring-1 focus-within:ring-[var(--color-primary)]">
-        <DateInput className="flex flex-1 px-4 py-3.5">
+      <Label className={hideLabel ? "sr-only" : "text-sm text-slate-600"}>
+        {label}
+      </Label>
+      <Group
+        className={joinClasses(
+          "relative flex w-full items-center rounded-xl border border-slate-200 bg-white text-sm text-slate-700 outline-none transition focus-within:border-[var(--color-primary)] focus-within:ring-1 focus-within:ring-[var(--color-primary)]",
+          groupClassName
+        )}
+      >
+        <button
+          type="button"
+          className="absolute inset-0 z-10 rounded-xl focus:outline-none"
+          onClick={() => triggerRef.current?.click()}
+          aria-label={label ? `Open ${label}` : "Open calendar"}
+        />
+        <DateInput className={joinClasses("flex flex-1 px-4 py-3.5", dateInputClassName)}>
           {(segment) => (
             <DateSegment
               segment={segment}
-              className="rounded p-0.5 leading-none text-slate-700 outline-none ring-0 data-[placeholder]:text-slate-400 data-[type=literal]:text-slate-400 data-[focused]:bg-transparent data-[focused]:text-slate-700"
-            />
+              className={joinClasses(
+                "rounded p-0.5 leading-none text-slate-700 outline-none ring-0 data-[placeholder]:text-slate-400 data-[focused]:bg-transparent data-[focused]:text-slate-700",
+                segment.type === "literal" ? "px-0" : "",
+                valueSegmentClassName
+              )}
+            >
+              {segment.type === "literal" ? segment.text.replace(/\s+/g, "") : undefined}
+            </DateSegment>
           )}
         </DateInput>
-        <Button className="mr-3 h-8 w-8 rounded-lg text-slate-500 transition hover:bg-slate-100">
-          <span className="text-lg leading-none">▾</span>
+        <Button
+          ref={triggerRef}
+          className={joinClasses(
+            "relative z-20 mr-3 h-8 w-8 rounded-lg text-slate-500 transition hover:bg-slate-100",
+            buttonClassName
+          )}
+        >
+          <CalendarIcon className={iconClassName} />
         </Button>
       </Group>
       <Popover className="rounded-2xl bg-white p-3 shadow-[0_18px_40px_-20px_rgba(15,23,42,0.45)]">
@@ -171,7 +216,7 @@ export default function ModernDatePicker({
                 slot="previous"
                 className="h-8 w-8 rounded-lg text-slate-500 transition hover:bg-slate-100"
               >
-                {"<"}
+                <ChevronLeftIcon />
               </Button>
               <div className="flex items-center gap-1 px-1 py-1">
                 <MonthDropdown />
@@ -181,7 +226,7 @@ export default function ModernDatePicker({
                 slot="next"
                 className="h-8 w-8 rounded-lg text-slate-500 transition hover:bg-slate-100"
               >
-                {">"}
+                <ChevronRightIcon />
               </Button>
             </header>
             <CalendarGrid className="w-full border-separate border-spacing-1">
@@ -196,7 +241,7 @@ export default function ModernDatePicker({
                 {(date) => (
                   <CalendarCell
                     date={date}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-sm text-slate-700 outline-none transition data-[selected]:bg-[var(--color-primary)] data-[selected]:text-white data-[hovered]:bg-slate-100 data-[focus-visible]:ring-2 data-[focus-visible]:ring-[var(--color-primary)]"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-sm text-slate-700 outline-none transition data-[selected]:bg-[var(--color-primary)] data-[selected]:text-white data-[hovered]:bg-slate-100 data-[focus-visible]:ring-2 data-[focus-visible]:ring-[var(--color-primary)] data-[outside-month]:text-slate-300 data-[outside-month]:opacity-80 data-[outside-month]:hover:bg-transparent data-[outside-visible-range]:text-slate-300 data-[outside-visible-range]:opacity-80 data-[disabled]:text-slate-300 data-[unavailable]:text-slate-300"
                   />
                 )}
               </CalendarGridBody>

@@ -1,21 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SideBarNavItem from "./SideBarNavItem";
-import expandButtonIcon from "../images/expand_button_icon.png";
-import collapseButtonIcon from "../images/collapse_button_icon.png";
-import homeIcon from "../images/home_icon.png";
-import eventsIcon from "../images/events_icon.png";
-import notificationIcon from "../images/notification_icon.png";
-import calendarIcon from "../images/calendar_icon.png";
-import mapIcon from "../images/map_icon.png";
-import friendsIcon from "../images/friends_icon.png";
-import chatsIcon from "../images/chats_icon.png";
-import profileIcon from "../images/profile_icon.png";
-import settingsIcon from "../images/settings_icon.png";
-import searchIcon from "../images/search_icon.png";
-import helpButtonIcon from "../images/help_button_icon.png";
-import toggleThemeLightButtonIcon from "../images/toggle_theme_light_button_icon.png";
-import toggleThemeDarkButtonIcon from "../images/toggle_theme_dark_button_icon.png";
+import expandButtonIcon from "../../images/expand_button_icon.png";
+import collapseButtonIcon from "../../images/collapse_button_icon.png";
+import homeIcon from "../../images/home_icon.png";
+import eventsIcon from "../../images/events_icon.png";
+import notificationIcon from "../../images/notification_icon.png";
+import calendarIcon from "../../images/calendar_icon.png";
+import mapIcon from "../../images/map_icon.png";
+import friendsIcon from "../../images/friends_icon.png";
+import chatsIcon from "../../images/chats_icon.png";
+import profileIcon from "../../images/profile_icon.png";
+import settingsIcon from "../../images/settings_icon.png";
+import searchIcon from "../../images/search_icon.png";
+import helpButtonIcon from "../../images/help_button_icon.png";
+import toggleThemeLightButtonIcon from "../../images/toggle_theme_light_button_icon.png";
+import toggleThemeDarkButtonIcon from "../../images/toggle_theme_dark_button_icon.png";
 
 const menuItems = [
   { key: "home", label: "Home", icon: homeIcon },

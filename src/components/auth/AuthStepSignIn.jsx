@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AuthHeader from "./AuthHeader";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
-import Divider from "./Divider";
-import showPasswordIcon from "../images/show_password_icon.png";
-import hidePasswordIcon from "../images/hide_password_icon.png";
+import PrimaryButton from "../PrimaryButton";
+import SecondaryButton from "../SecondaryButton";
+import Divider from "../Divider";
+import showPasswordIcon from "../../images/show_password_icon.png";
+import hidePasswordIcon from "../../images/hide_password_icon.png";
 
 export default function AuthStepSignIn({ onCreateAccount, onForgotPassword }) {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import AuthHeader from "./AuthHeader";
-import Stepper from "./Stepper";
-import PrimaryButton from "./PrimaryButton";
-import hidePasswordIcon from "../images/hide_password_icon.png";
-import showPasswordIcon from "../images/show_password_icon.png";
+import PrimaryButton from "../PrimaryButton";
+import hidePasswordIcon from "../../images/hide_password_icon.png";
+import showPasswordIcon from "../../images/show_password_icon.png";
 
 export default function AuthStepPassword({ steps, activeIndex = 2, onNext }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,9 +10,7 @@ export default function AuthStepPassword({ steps, activeIndex = 2, onNext }) {
 
   return (
     <>
-      <AuthHeader title="Create an account" subtitle="" />
-
-      <Stepper steps={steps} activeIndex={activeIndex} />
+      <AuthHeader title="Reset password" subtitle="" />
 
       <div className="mt-6 grid gap-6 text-left text-sm text-slate-600">
         <div>
@@ -69,7 +66,7 @@ export default function AuthStepPassword({ steps, activeIndex = 2, onNext }) {
       </div>
 
       <div className="mt-8">
-        <PrimaryButton onClick={onNext}>Create</PrimaryButton>
+        <PrimaryButton onClick={onNext}>Reset</PrimaryButton>
       </div>
     </>
   );

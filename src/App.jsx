@@ -7,8 +7,10 @@ import {
   useLocation,
 } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
-import SideBar from "./components/SideBar";
+import SideBar from "./components/sidebar/SideBar";
 import ComingSoonPage from "./pages/ComingSoonPage";
+import Footer from "./components/Footer";
+import CreateEventPage from "./pages/CreateEventPage";
 
 function AppLayout() {
   const location = useLocation();
@@ -19,19 +21,19 @@ function AppLayout() {
     : "clamp(4.5rem, 6vw, 5.5rem)";
 
   return (
-    <div className="min-h-screen bg-slate-600">
+    <div className="min-h-screen">
       <SideBar
         currentPage={currentPage}
         isExpanded={isSidebarExpanded}
         sidebarWidth={sidebarWidth}
         onToggle={() => setIsSidebarExpanded((prev) => !prev)}
       />
-      <main
-        className="h-screen transition-all duration-200"
-        style={{ marginLeft: sidebarWidth }}
-      >
-        <Outlet />
-      </main>
+      <div className="flex flex-col transition-all duration-200" style={{ marginLeft: sidebarWidth }}>
+        <main className="min-h-screen">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
@@ -43,6 +45,7 @@ export default function App() {
       <Route element={<AppLayout />}>
         <Route path="/home" element={<ComingSoonPage />} />
         <Route path="/events" element={<ComingSoonPage />} />
+        <Route path="/events/create" element={<CreateEventPage />} />
         <Route path="/notifications" element={<ComingSoonPage />} />
         <Route path="/calendar" element={<ComingSoonPage />} />
         <Route path="/map" element={<ComingSoonPage />} />

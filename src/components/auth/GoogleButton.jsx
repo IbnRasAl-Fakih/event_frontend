@@ -1,5 +1,5 @@
 import React from "react";
-import googleLogo from "../images/google_logo.png";
+import googleLogo from "../../images/google_logo.png";
 
 export default function GoogleButton({ children }) {
   return (

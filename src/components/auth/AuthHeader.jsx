@@ -1,5 +1,5 @@
 import React from "react";
-import LogoMark from "./LogoMark";
+import LogoMark from "./../LogoMark";
 
 export default function AuthHeader({ title, subtitle, showLogo = true }) {
   return (

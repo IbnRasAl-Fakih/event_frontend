@@ -1,8 +1,7 @@
 import React from "react";
 import AuthHeader from "./AuthHeader";
 import TextField from "./TextField";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
+import PrimaryButton from "../PrimaryButton";
 
 export default function AuthStepForgotPassword({ onBack, onNext }) {
   return (

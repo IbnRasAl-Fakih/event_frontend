@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import AuthStepEmail from "../components/AuthStepEmail";
-import AuthStepVerify from "../components/AuthStepVerify";
-import AuthStepBasicInfo from "../components/AuthStepBasicInfo";
-import AuthStepPassword from "../components/AuthStepPassword";
-import AuthStepSignIn from "../components/AuthStepSignIn";
-import AuthStepForgotPassword from "../components/AuthStepForgotPassword";
-import ResetPassword from "../components/ResetPassword";
+import AuthStepEmail from "../components/auth/AuthStepEmail";
+import AuthStepVerify from "../components/auth/AuthStepVerify";
+import AuthStepBasicInfo from "../components/auth/AuthStepBasicInfo";
+import AuthStepPassword from "../components/auth/AuthStepPassword";
+import AuthStepSignIn from "../components/auth/AuthStepSignIn";
+import AuthStepForgotPassword from "../components/auth/AuthStepForgotPassword";
+import ResetPassword from "../components/auth/ResetPassword";
+import Footer from "../components/Footer";
 
 export default function AuthPage() {
   const [step, setStep] = useState(1);
@@ -16,7 +17,7 @@ export default function AuthPage() {
   ];
 
   return (
-    <div className="min-h-screen text-slate-900">
+    <div className="flex flex-col text-slate-900">
       <div className="mx-auto grid min-h-screen w-full place-items-center px-4 py-8">
         {step === 1 ? (
           <div className="w-full">
@@ -77,6 +78,7 @@ export default function AuthPage() {
           </div>
         ) : null}
       </div>
+      <Footer />
     </div>
   );
 }

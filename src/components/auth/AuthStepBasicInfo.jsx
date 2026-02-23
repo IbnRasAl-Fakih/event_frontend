@@ -2,23 +2,26 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import AuthHeader from "./AuthHeader";
 import Stepper from "./Stepper";
 import TextField from "./TextField";
-import PrimaryButton from "./PrimaryButton";
-import defaultUserAvatar from "../images/default_user_avatar.png";
+import AuthDropdownField from "../DropdownField";
+import PrimaryButton from "../PrimaryButton";
+import defaultUserAvatar from "../../images/default_user_avatar.png";
+import uploadAvatarButtonIcon from "../../images/upload_avatar_button_icon.png";
 import worldCities from "world-cities-json";
 import { parseDate } from "@internationalized/date";
-import ModernDatePicker from "./ModernDatePicker";
+import ModernDatePicker from "../ModernDatePicker";
+import PhotoEditorModal from "../PhotoEditorModal";
 
 export default function AuthStepBasicInfo({ steps, activeIndex = 1, onNext }) {
-  const [sex, setSex] = useState("Male");
+  const [sex, setSex] = useState("");
   const [sexOther, setSexOther] = useState("");
-  const [sexOpen, setSexOpen] = useState(false);
   const [cityQuery, setCityQuery] = useState("");
   const [cityOpen, setCityOpen] = useState(false);
   const [birthDate, setBirthDate] = useState(null);
-  const sexButtonRef = useRef(null);
-  const sexWrapperRef = useRef(null);
+  const [avatarSrc, setAvatarSrc] = useState(defaultUserAvatar);
+  const [uploadedPhotoSrc, setUploadedPhotoSrc] = useState("");
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const sexOtherRef = useRef(null);
-  const birthPlaceholder = useMemo(() => parseDate("2004-06-14"), []);
+  const photoInputRef = useRef(null);
 
   const cityOptions = useMemo(() => {
     const query = cityQuery.trim().toLowerCase();
@@ -45,20 +48,7 @@ export default function AuthStepBasicInfo({ steps, activeIndex = 1, onNext }) {
   }, [cityQuery]);
 
   useEffect(() => {
-    if (!sexOpen) return;
-    const handleOutsideClick = (event) => {
-      if (!sexWrapperRef.current?.contains(event.target)) {
-        setSexOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [sexOpen]);
-
-  useEffect(() => {
     if (sex === "Other") {
-      sexButtonRef.current?.blur();
-      setSexOpen(false);
       setTimeout(() => sexOtherRef.current?.focus(), 0);
     }
   }, [sex]);
@@ -83,12 +73,43 @@ export default function AuthStepBasicInfo({ steps, activeIndex = 1, onNext }) {
         </div>
 
         <div className="mt-5 flex items-center gap-4">
-          <div className="relative h-14 w-14 overflow-hidden rounded-full inline-flex items-center">
+          <div className="relative inline-flex h-20 w-20 items-center justify-center rounded-full border border-sky-300 bg-sky-50">
             <img
-              className="object-contain"
-              src={defaultUserAvatar}
-              alt=""
-              aria-hidden="true"
+              className="h-full w-full rounded-full object-cover"
+              src={avatarSrc}
+              alt="Profile"
+            />
+            <button
+              type="button"
+              onClick={() => photoInputRef.current?.click()}
+              className="absolute bottom-1 right-0 z-10 grid h-7 w-7 translate-x-1/3 translate-y-1/3 place-items-center rounded-full border-2 border-white bg-sky-500 text-white shadow-sm"
+              aria-label="Upload profile photo"
+            >
+              <img
+                className="h-7 w-7 object-contain"
+                src={uploadAvatarButtonIcon}
+                alt=""
+                aria-hidden="true"
+              />
+            </button>
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const nextSrc = reader.result;
+                  if (typeof nextSrc !== "string") return;
+                  setUploadedPhotoSrc(nextSrc);
+                  setIsEditorOpen(true);
+                };
+                reader.readAsDataURL(file);
+                event.target.value = "";
+              }}
             />
           </div>
           <div>
@@ -141,71 +162,58 @@ export default function AuthStepBasicInfo({ steps, activeIndex = 1, onNext }) {
             label="Date of Birth"
             value={birthDate}
             onChange={setBirthDate}
-            placeholderValue={birthPlaceholder}
           />
           <TextField label="Job" placeholder="Musician" />
-          <label className="grid gap-2 text-left text-sm text-slate-600 mt-3">
-            <span>Sex</span>
-            <div className="relative" ref={sexWrapperRef}>
-              <button
-                ref={sexButtonRef}
-                type="button"
-                className={`flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] ${
-                  sex === "Other" ? "pointer-events-none opacity-0" : ""
-                }`}
-                onClick={() => setSexOpen((prev) => !prev)}
-              >
-                <span>{sex}</span>
-                <span className="mr-1 text-lg text-slate-500">▾</span>
-              </button>
-              {sexOpen ? (
-                <div className="absolute z-10 mt-2 w-full overflow-hidden rounded-xl bg-white shadow-[0_14px_34px_-18px_rgba(15,23,42,0.45)]">
-                  {["Male", "Female", "Other"].map((option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      className="w-full px-4 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-50"
-                      onMouseDown={(event) => event.preventDefault()}
-                      onClick={() => {
-                        setSex(option);
-                        setSexOpen(false);
-                      }}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-              {sex === "Other" ? (
-                <div className="absolute inset-0">
-                  <input
-                    ref={sexOtherRef}
-                    className="h-full w-full rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
-                    placeholder="Specify"
-                    value={sexOther}
-                    onChange={(event) => setSexOther(event.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-sm text-slate-400 hover:text-slate-600"
-                    onClick={() => {
-                      setSex("Male");
-                      setSexOther("");
-                      setSexOpen(false);
-                    }}
-                  >
-                    x
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </label>
+          {sex !== "Other" ? (
+            <AuthDropdownField
+              label="Sex"
+              className="mt-3"
+              placeholder="Sex"
+              value={sex}
+              options={["Male", "Female", "Other"]}
+              onChange={setSex}
+            />
+          ) : (
+            <label className="mt-3 grid gap-2 text-left text-sm text-slate-600">
+              <span>Sex</span>
+              <div className="relative">
+                <input
+                  ref={sexOtherRef}
+                  className="h-[42px] w-full rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+                  placeholder="Specify"
+                  value={sexOther}
+                  onChange={(event) => setSexOther(event.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-2/3 text-sm text-slate-400 hover:text-slate-600"
+                  onClick={() => {
+                    setSex("");
+                    setSexOther("");
+                  }}
+                >
+                  x
+                </button>
+              </div>
+            </label>
+          )}
         </div>
       </div>
 
       <div className="mt-6">
         <PrimaryButton onClick={onNext}>Next</PrimaryButton>
       </div>
+
+      {isEditorOpen && uploadedPhotoSrc ? (
+        <PhotoEditorModal
+          imageSrc={uploadedPhotoSrc}
+          onClose={() => setIsEditorOpen(false)}
+          onSave={(resultSrc) => {
+            setAvatarSrc(resultSrc);
+            setIsEditorOpen(false);
+          }}
+        />
+      ) : null}
     </>
   );
 }
