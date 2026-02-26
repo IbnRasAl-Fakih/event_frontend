@@ -7,11 +7,16 @@ export default function StepProgress({ steps, activeIndex }) {
         {steps.map((label, index) => {
           const isActive = index === activeIndex;
           const isPassed = index < activeIndex;
+          const isConnectorActive = index < activeIndex;
 
           return (
             <div key={label} className="relative">
               {index < steps.length - 1 ? (
-                <div className="absolute left-1/2 right-[calc(-50%-0.5rem)] top-2 h-0.5 bg-sky-300/70 sm:right-[calc(-50%-1rem)]" />
+                <div
+                  className={`absolute left-1/2 right-[calc(-50%-0.5rem)] top-2 h-0.5 sm:right-[calc(-50%-1rem)] ${
+                    isConnectorActive ? "bg-sky-500" : "bg-sky-300/70"
+                  }`}
+                />
               ) : null}
               <div className="relative z-10 flex flex-col items-center text-center">
                 <span
@@ -23,7 +28,7 @@ export default function StepProgress({ steps, activeIndex }) {
                 />
                 <span
                   className={`mt-2.5 text-xs font-medium sm:text-sm ${
-                    isActive ? "text-sky-600" : "text-sky-400"
+                    isActive || isPassed ? "text-sky-600" : "text-sky-400"
                   }`}
                 >
                   {label}
